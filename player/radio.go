@@ -1,17 +1,18 @@
 package player
 
 import (
-	"github.com/hajimehoshi/ebiten/v2/audio"
-	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
 	"io"
 	"log"
 	"net/http"
 	"radio/channels"
+	"time"
 )
 
 type RadioPlayer struct {
-	sampleRate int
-	player     *audio.Player
+	sampleRate beep.SampleRate
 	logger     *log.Logger
 
 	externalInputStream io.ReadCloser
@@ -22,14 +23,14 @@ func (r *RadioPlayer) SetLogger(logger *log.Logger) {
 }
 
 func NewRadioPlayer() *RadioPlayer {
-	sampleRate := 44100
-	audio.NewContext(sampleRate)
+	sr := beep.SampleRate(44100)
+	speaker.Init(sr, sr.N(time.Millisecond*100))
 
-	return &RadioPlayer{sampleRate: sampleRate}
+	return &RadioPlayer{sampleRate: sr}
 }
 
 func (r *RadioPlayer) Play() {
-	r.player.Play()
+	speaker.Clear()
 }
 
 func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
@@ -43,28 +44,24 @@ func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
 	}
 	r.externalInputStream = response.Body
 
-	decodedStream, err := mp3.DecodeWithSampleRate(r.sampleRate, r.externalInputStream)
+	decode, format, err := mp3.Decode(r.externalInputStream)
 	if err != nil {
-		r.logger.Println(err)
 		return err
 	}
 
-	player, err := audio.CurrentContext().NewPlayer(decodedStream)
-	if err != nil {
-		r.logger.Println(err)
-		return err
+	var stream beep.Streamer = decode
+	r.logger.Println("Samplerate:", format.SampleRate)
+	if format.SampleRate != r.sampleRate {
+		r.logger.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
+		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
 	}
-	r.player = player
 
-	r.player.Play()
+	speaker.Play(stream)
 	return nil
 }
 
 func (r *RadioPlayer) Close() {
 	if r.externalInputStream != nil {
 		r.externalInputStream.Close()
-	}
-	if r.player != nil {
-		r.player.Close()
 	}
 }

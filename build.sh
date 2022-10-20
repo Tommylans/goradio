@@ -1,0 +1,1 @@
+gox -output="./output/radio_{{.OS}}_{{.Arch}}" -os="windows linux darwin"
