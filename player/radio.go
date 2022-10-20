@@ -16,7 +16,8 @@ type RadioPlayer struct {
 	sampleRate beep.SampleRate
 	logger     *log.Logger
 
-	volume *effects.Volume
+	volume        *effects.Volume
+	sessionVolume float64
 
 	externalInputStream io.ReadCloser
 }
@@ -58,7 +59,7 @@ func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
 	volume := &effects.Volume{
 		Streamer: stream,
 		Base:     2,
-		Volume:   0,
+		Volume:   r.sessionVolume,
 		Silent:   false,
 	}
 
@@ -82,25 +83,22 @@ func (r *RadioPlayer) Mute() {
 }
 
 func (r *RadioPlayer) IncreaseVolume() {
-	if r.volume != nil {
-		speaker.Lock()
-		r.volume.Volume += 0.5
-		speaker.Unlock()
-	}
+	r.setVolume(0.5)
 }
 
 func (r *RadioPlayer) ResetVolume() {
-	if r.volume != nil {
-		speaker.Lock()
-		r.volume.Volume = 0
-		speaker.Unlock()
-	}
+	r.setVolume(0)
 }
 
 func (r *RadioPlayer) DecreaseVolume() {
+	r.setVolume(-0.5)
+}
+
+func (r *RadioPlayer) setVolume(change float64) {
 	if r.volume != nil {
 		speaker.Lock()
-		r.volume.Volume -= 0.5
+		r.volume.Volume += change
+		r.sessionVolume = r.volume.Volume
 		speaker.Unlock()
 	}
 }
