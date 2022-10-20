@@ -21,11 +21,15 @@ jobs:
         with:
           go-version: 1.19
 
+      - name: Install packages
+        run: apt install -y libasound2-dev
+
       - name: Install gox
         run: go install github.com/mitchellh/gox@latest
 
       - name: Build
-        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64 darwin/amd64"
+#        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64 darwin/amd64"
+        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386"
 
       - name: Test
         run: go test -v ./...
