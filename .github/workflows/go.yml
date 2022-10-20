@@ -21,8 +21,11 @@ jobs:
         with:
           go-version: 1.19
 
+      - name: Install gox
+        run: go install github.com/mitchellh/gox@latest
+
       - name: Build
-        run: ./build.sh
+        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -os="windows linux darwin"
 
       - name: Test
         run: go test -v ./...
