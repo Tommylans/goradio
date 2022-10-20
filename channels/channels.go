@@ -13,6 +13,5 @@ var (
 		{Name: "NPO Radio 2", Url: "https://icecast.omroep.nl/radio2-bb-mp3"},
 		{Name: "NPO 3FM", Url: "https://icecast.omroep.nl/3fm-bb-mp3"},
 		{Name: "NPO FunX", Url: "https://icecast.omroep.nl/funx-bb-mp3"},
-		{Name: "NPO FunX", Url: "https://icecast.omroep.nl/funx-bb-mp3"},
 	}
 )
