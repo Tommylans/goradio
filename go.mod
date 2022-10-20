@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/faiface/beep v1.1.0
 	github.com/gdamore/tcell/v2 v2.4.1-0.20210905002822-f057f0a857a1
-	github.com/hajimehoshi/ebiten/v2 v2.4.8
 	github.com/rivo/tview v0.0.0-20220916081518-2e69b7385a37
 )
 
@@ -13,7 +12,6 @@ require (
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
 	github.com/hajimehoshi/oto v0.7.1 // indirect
-	github.com/hajimehoshi/oto/v2 v2.3.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
