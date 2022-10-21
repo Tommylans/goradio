@@ -83,18 +83,18 @@ func (r *RadioPlayer) Mute() {
 }
 
 func (r *RadioPlayer) IncreaseVolume() {
-	r.setVolume(0.5)
+	r.changeVolume(0.5)
 }
 
 func (r *RadioPlayer) ResetVolume() {
-	r.setVolume(0)
+	r.changeVolume(-r.sessionVolume)
 }
 
 func (r *RadioPlayer) DecreaseVolume() {
-	r.setVolume(-0.5)
+	r.changeVolume(-0.5)
 }
 
-func (r *RadioPlayer) setVolume(change float64) {
+func (r *RadioPlayer) changeVolume(change float64) {
 	if r.volume != nil {
 		speaker.Lock()
 		r.volume.Volume += change
