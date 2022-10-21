@@ -7,6 +7,7 @@ import (
 	"os"
 	"radio/channels"
 	"radio/player"
+	"sync"
 )
 
 type PlayerUi struct {
@@ -15,6 +16,8 @@ type PlayerUi struct {
 	logView     *tview.TextView
 
 	debugMode bool
+
+	playLock sync.Mutex
 }
 
 func (p *PlayerUi) LogView() *tview.TextView {
@@ -106,7 +109,11 @@ func (p *PlayerUi) initTracksTable() {
 }
 
 func (p *PlayerUi) playRow(row int) {
-	go p.player.PlayChannel(channels.RadioChannels[row])
+	p.playLock.Lock()
+	go func() {
+		p.player.PlayChannel(channels.RadioChannels[row])
+		p.playLock.Unlock()
+	}()
 
 	p.setTracksTableData()
 
