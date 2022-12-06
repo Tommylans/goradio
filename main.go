@@ -19,7 +19,10 @@ func main() {
 	playerUi := ui.NewPlayerUi(radioPlayer, *debug)
 
 	logger := log.New(playerUi.LogView(), "", 0)
+	playerUi.SetLogger(logger)
 	radioPlayer.SetLogger(logger)
+
+	go playerUi.InitDiscordRichPresence("1049721387922751528")
 
 	err := playerUi.Start()
 	if err != nil {

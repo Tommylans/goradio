@@ -3,17 +3,24 @@ package ui
 import (
 	"fmt"
 	"github.com/gdamore/tcell/v2"
+	"github.com/hugolgst/rich-go/client"
 	"github.com/rivo/tview"
+	"log"
 	"os"
 	"radio/channels"
 	"radio/player"
 	"sync"
+	"time"
 )
 
 type PlayerUi struct {
 	player      *player.RadioPlayer
 	tracksTable *tview.Table
 	logView     *tview.TextView
+
+	logger *log.Logger
+
+	currentChannel *channels.RadioChannel
 
 	debugMode bool
 
@@ -22,6 +29,10 @@ type PlayerUi struct {
 
 func (p *PlayerUi) LogView() *tview.TextView {
 	return p.logView
+}
+
+func (p *PlayerUi) SetLogger(logger *log.Logger) {
+	p.logger = logger
 }
 
 func NewPlayerUi(player *player.RadioPlayer, debugMode bool) *PlayerUi {
@@ -120,6 +131,10 @@ func (p *PlayerUi) playRow(row int) {
 	playingStation := p.tracksTable.GetCell(row, 0)
 	playingStation.SetText("▶ " + playingStation.Text)
 	playingStation.SetStyle(tcell.StyleDefault.Foreground(tcell.ColorGreen))
+
+	p.currentChannel = &channels.RadioChannels[row]
+
+	go p.updateDiscordPresence()
 }
 
 func (p *PlayerUi) setTracksTableData() {
@@ -130,5 +145,39 @@ func (p *PlayerUi) setTracksTableData() {
 	for i, station := range stations {
 		p.tracksTable.SetCellSimple(i, 0, station.Name)
 		p.tracksTable.SetCellSimple(i, 1, station.Url)
+	}
+}
+
+func (p *PlayerUi) InitDiscordRichPresence(clientId string) {
+	err := client.Login(clientId)
+	if err != nil {
+		p.logger.Println("Error while logging in to Discord:", err)
+		return
+	}
+}
+
+func (p *PlayerUi) updateDiscordPresence() {
+	if p.currentChannel == nil {
+		p.logger.Println("No channel selected")
+		return
+	}
+
+	now := time.Now()
+
+	activity := client.Activity{
+		Details: p.currentChannel.Name,
+		Timestamps: &client.Timestamps{
+			Start: &now,
+		},
+	}
+
+	if p.currentChannel.SnowflakeId != "" {
+		activity.LargeImage = p.currentChannel.SnowflakeId
+		activity.LargeText = p.currentChannel.Name
+	}
+
+	err := client.SetActivity(activity)
+	if err != nil {
+		p.logger.Println("Error while updating Discord presence:", err)
 	}
 }

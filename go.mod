@@ -1,6 +1,6 @@
 module radio
 
-go 1.19
+go 1.18
 
 require (
 	github.com/faiface/beep v1.1.0
@@ -12,6 +12,7 @@ require (
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.3 // indirect
 	github.com/hajimehoshi/oto v0.7.1 // indirect
+	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
