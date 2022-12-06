@@ -13,8 +13,9 @@ import (
 )
 
 type RadioPlayer struct {
-	sampleRate beep.SampleRate
-	logger     *log.Logger
+	sampleRate         beep.SampleRate
+	logger             *log.Logger
+	speakerInitialized bool
 
 	volume        *effects.Volume
 	sessionVolume float64
@@ -27,10 +28,7 @@ func (r *RadioPlayer) SetLogger(logger *log.Logger) {
 }
 
 func NewRadioPlayer() *RadioPlayer {
-	sr := beep.SampleRate(44100)
-	speaker.Init(sr, sr.N(time.Millisecond*100))
-
-	return &RadioPlayer{sampleRate: sr}
+	return &RadioPlayer{}
 }
 
 func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
@@ -44,16 +42,11 @@ func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
 	}
 	r.externalInputStream = response.Body
 
-	decode, format, err := mp3.Decode(r.externalInputStream)
+	var stream beep.Streamer
+
+	stream, format, err := mp3.Decode(r.externalInputStream)
 	if err != nil {
 		return err
-	}
-
-	var stream beep.Streamer = decode
-	r.logger.Println("Samplerate:", format.SampleRate)
-	if format.SampleRate != r.sampleRate {
-		r.logger.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
-		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
 	}
 
 	volume := &effects.Volume{
@@ -66,8 +59,24 @@ func (r *RadioPlayer) PlayChannel(channel channels.RadioChannel) error {
 	r.volume = volume
 	stream = volume
 
-	speaker.Play(stream)
+	r.play(stream, format)
 	return nil
+}
+
+func (r *RadioPlayer) play(stream beep.Streamer, format beep.Format) {
+	if !r.speakerInitialized {
+		speaker.Init(format.SampleRate, format.SampleRate.N(time.Millisecond*100))
+		r.sampleRate = format.SampleRate
+		r.speakerInitialized = true
+	}
+
+	r.logger.Println("Samplerate:", format.SampleRate)
+	if format.SampleRate != r.sampleRate {
+		r.logger.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
+		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
+	}
+
+	speaker.Play(stream)
 }
 
 func (r *RadioPlayer) Stop() {
