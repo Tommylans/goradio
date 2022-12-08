@@ -45,22 +45,39 @@ func NewPlayerUi(player *player.RadioPlayer, debugMode bool) *PlayerUi {
 }
 
 func (p *PlayerUi) Start() error {
-	flex := tview.NewFlex()
-	flex.SetTitle("Radio Stations")
-	flex.SetTitleAlign(tview.AlignLeft)
-	flex.SetBorder(false)
+	app := tview.NewApplication()
 
 	p.initTracksTable()
 	p.setTracksTableData()
 
-	flex.AddItem(p.tracksTable, 0, 1, true)
+	mainView := tview.NewFlex()
+	mainView.AddItem(p.tracksTable, 0, 1, true)
 	if p.debugMode {
-		flex.AddItem(p.logView, 70, 1, false)
+		mainView.AddItem(p.logView, 70, 1, false)
 	}
 
-	appUi := tview.NewApplication().SetRoot(flex, true)
+	helpInfo := tview.NewTextView().
+		SetTextColor(tcell.ColorBlue).
+		SetText(" m: Mute, s: Stop, +/=: Increase volume, -: Decrease volume, 0: Reset volume, q: Quit")
 
-	flex.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+	creditsText := tview.NewTextView().
+		SetDynamicColors(true).
+		SetTextAlign(tview.AlignRight).
+		SetText("[green]Made with [red]❤  [green]by [gold]Tommylans")
+
+	infoBox := tview.NewFlex().
+		SetDirection(tview.FlexColumn).
+		AddItem(helpInfo, 0, 1, false).
+		AddItem(creditsText, 0, 1, false)
+
+	view := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(mainView, 0, 1, true).
+		AddItem(infoBox, 1, 1, false)
+
+	appUi := app.SetRoot(view, true)
+
+	mainView.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		key := string(event.Rune())
 
 		fmt.Fprintln(p.logView, "Keypress:", key, event.Key(), event.Rune(), event.Name())
@@ -171,8 +188,8 @@ func (p *PlayerUi) updateDiscordPresence() {
 		},
 	}
 
-	if p.currentChannel.SnowflakeId != "" {
-		activity.LargeImage = p.currentChannel.SnowflakeId
+	if p.currentChannel.DiscordSnowflakeId != "" {
+		activity.LargeImage = p.currentChannel.DiscordSnowflakeId
 		activity.LargeText = p.currentChannel.Name
 	}
 
