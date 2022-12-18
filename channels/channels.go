@@ -10,6 +10,7 @@ var (
 	RadioChannels = []RadioChannel{
 		{Name: "SlamFM", Url: "https://stream.slam.nl/slam_mp3", DiscordSnowflakeId: "slamfm"},
 		{Name: "Veronica", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3"},
+		{Name: "SkyRadio", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIO.mp3", DiscordSnowflakeId: "skyradio"},
 		{Name: "NPO Radio 1", Url: "https://icecast.omroep.nl/radio1-bb-mp3"},
 		{Name: "NPO Radio 2", Url: "https://icecast.omroep.nl/radio2-bb-mp3", DiscordSnowflakeId: "nporadio2"},
 		{Name: "NPO Radio 2 Soul & Jazz", Url: "https://icecast.omroep.nl/radio6-bb-mp3", DiscordSnowflakeId: "nporadio2"},
