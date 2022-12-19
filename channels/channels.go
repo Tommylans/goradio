@@ -7,7 +7,7 @@ type RadioChannel struct {
 }
 
 var (
-	RadioChannels = []RadioChannel{
+	RadioChannels = []*RadioChannel{
 		{Name: "SlamFM", Url: "https://stream.slam.nl/slam_mp3", DiscordSnowflakeId: "slamfm"},
 		{Name: "Veronica", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3"},
 		{Name: "SkyRadio", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIO.mp3", DiscordSnowflakeId: "skyradio"},
