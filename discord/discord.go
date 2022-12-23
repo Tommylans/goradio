@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+var (
+	ErrChannelIsNil = errors.New("channel is nil")
+)
+
 func InitDiscordRichPresence(clientId string) error {
 	err := client.Login(clientId)
 	if err != nil {
@@ -18,7 +22,7 @@ func InitDiscordRichPresence(clientId string) error {
 
 func UpdateDiscordPresence(channel *channels.RadioChannel) error {
 	if channel == nil {
-		return errors.New("channel is nil")
+		return ErrChannelIsNil
 	}
 
 	now := time.Now()

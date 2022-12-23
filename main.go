@@ -23,15 +23,12 @@ func main() {
 	radioPlayer := radioplayer.NewRadioPlayer()
 
 	playerUi := ui.NewPlayerUi(radioPlayer, *debug)
-
-	logger := log.New(playerUi.GetLogView(), "", 0)
-	playerUi.SetLogger(logger)
-	radioPlayer.SetLogger(logger)
+	log.SetOutput(playerUi.GetLogView())
 
 	go func() {
 		err := discord.InitDiscordRichPresence(DiscordClientId)
 		if err != nil {
-			logger.Println(err)
+			log.Println(err)
 		}
 	}()
 
