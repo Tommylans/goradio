@@ -3,8 +3,8 @@ package ui
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
-	"radio/channels"
-	"radio/radioplayer"
+	"github.com/tommylans/goradio/channels"
+	"github.com/tommylans/goradio/radioplayer"
 	"sync"
 )
 
@@ -22,16 +22,21 @@ type PlayerUi struct {
 }
 
 func NewPlayerUi(player *radioplayer.RadioPlayer, debugMode bool) *PlayerUi {
+
+	return &PlayerUi{
+		player:    player,
+		logView:   createLogView(),
+		debugMode: debugMode,
+	}
+}
+
+func createLogView() *tview.TextView {
 	logView := tview.NewTextView()
 	logView.SetTitle("Log")
 	logView.SetTitleAlign(tview.AlignLeft)
 	logView.SetBorder(true)
 
-	return &PlayerUi{
-		player:    player,
-		logView:   logView,
-		debugMode: debugMode,
-	}
+	return logView
 }
 
 func (p *PlayerUi) GetLogView() *tview.TextView {

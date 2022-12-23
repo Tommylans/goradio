@@ -3,7 +3,7 @@ package discord
 import (
 	"errors"
 	"github.com/hugolgst/rich-go/client"
-	"radio/channels"
+	"github.com/tommylans/goradio/channels"
 	"time"
 )
 
