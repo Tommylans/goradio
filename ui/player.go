@@ -3,9 +3,9 @@ package ui
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
+	"github.com/tommylans/goradio/channels"
+	"github.com/tommylans/goradio/discord"
 	"log"
-	"radio/channels"
-	"radio/discord"
 )
 
 func (p *PlayerUi) initTracksTable() {
@@ -26,7 +26,7 @@ func (p *PlayerUi) initTracksTable() {
 func (p *PlayerUi) playRow(row int) {
 	p.playLock.Lock()
 	go func() {
-		p.player.PlayChannel(channels.RadioChannels[row])
+		p.player.PlayRadioChannel(channels.RadioChannels[row])
 		p.playLock.Unlock()
 	}()
 

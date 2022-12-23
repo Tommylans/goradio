@@ -1,4 +1,4 @@
-module radio
+module github.com/tommylans/goradio
 
 go 1.19
 

@@ -5,10 +5,10 @@ import (
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/mp3"
 	"github.com/faiface/beep/speaker"
+	"github.com/tommylans/goradio/channels"
 	"io"
 	"log"
 	"net/http"
-	"radio/channels"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func NewRadioPlayer() *RadioPlayer {
 	return &RadioPlayer{}
 }
 
-func (r *RadioPlayer) PlayChannel(channel *channels.RadioChannel) error {
+func (r *RadioPlayer) PlayRadioChannel(channel *channels.RadioChannel) error {
 	r.CloseCurrentStreams()
 	log.Println("Starting stream for: " + channel.Name)
 
@@ -72,39 +72,6 @@ func (r *RadioPlayer) play(stream beep.Streamer, format beep.Format) {
 	}
 
 	speaker.Play(stream)
-}
-
-func (r *RadioPlayer) Stop() {
-	speaker.Clear()
-}
-
-func (r *RadioPlayer) Mute() {
-	if r.volume != nil {
-		speaker.Lock()
-		r.volume.Silent = !r.volume.Silent
-		speaker.Unlock()
-	}
-}
-
-func (r *RadioPlayer) IncreaseVolume() {
-	r.changeVolume(0.5)
-}
-
-func (r *RadioPlayer) ResetVolume() {
-	r.changeVolume(-r.sessionVolume)
-}
-
-func (r *RadioPlayer) DecreaseVolume() {
-	r.changeVolume(-0.5)
-}
-
-func (r *RadioPlayer) changeVolume(change float64) {
-	if r.volume != nil {
-		speaker.Lock()
-		r.volume.Volume += change
-		r.sessionVolume = r.volume.Volume
-		speaker.Unlock()
-	}
 }
 
 func (r *RadioPlayer) CloseCurrentStreams() {
