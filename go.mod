@@ -1,6 +1,6 @@
 module radio
 
-go 1.18
+go 1.19
 
 require (
 	github.com/faiface/beep v1.1.0

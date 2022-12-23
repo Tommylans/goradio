@@ -14,7 +14,6 @@ import (
 
 type RadioPlayer struct {
 	sampleRate         beep.SampleRate
-	logger             *log.Logger
 	speakerInitialized bool
 
 	volume        *effects.Volume
@@ -23,21 +22,17 @@ type RadioPlayer struct {
 	externalInputStream io.ReadCloser
 }
 
-func (r *RadioPlayer) SetLogger(logger *log.Logger) {
-	r.logger = logger
-}
-
 func NewRadioPlayer() *RadioPlayer {
 	return &RadioPlayer{}
 }
 
 func (r *RadioPlayer) PlayChannel(channel *channels.RadioChannel) error {
-	r.Close()
-	r.logger.Println("Starting stream for: " + channel.Name)
+	r.CloseCurrentStreams()
+	log.Println("Starting stream for: " + channel.Name)
 
 	response, err := http.Get(channel.Url)
 	if err != nil {
-		r.logger.Println(err)
+		log.Println(err)
 		return err
 	}
 	r.externalInputStream = response.Body
@@ -70,9 +65,9 @@ func (r *RadioPlayer) play(stream beep.Streamer, format beep.Format) {
 		r.speakerInitialized = true
 	}
 
-	r.logger.Println("Samplerate:", format.SampleRate)
+	log.Println("Samplerate:", format.SampleRate)
 	if format.SampleRate != r.sampleRate {
-		r.logger.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
+		log.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
 		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
 	}
 
@@ -112,7 +107,7 @@ func (r *RadioPlayer) changeVolume(change float64) {
 	}
 }
 
-func (r *RadioPlayer) Close() {
+func (r *RadioPlayer) CloseCurrentStreams() {
 	if r.externalInputStream != nil {
 		r.externalInputStream.Close()
 	}
