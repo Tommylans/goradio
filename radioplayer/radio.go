@@ -32,7 +32,7 @@ func (r *RadioPlayer) PlayRadioChannel(channel *channels.RadioChannel) error {
 
 	response, err := http.Get(channel.Url)
 	if err != nil {
-		log.Println(err)
+		log.Println("Error while getting stream:", err)
 		return err
 	}
 	r.externalInputStream = response.Body
@@ -67,7 +67,7 @@ func (r *RadioPlayer) play(stream beep.Streamer, format beep.Format) {
 
 	log.Println("Samplerate:", format.SampleRate)
 	if format.SampleRate != r.sampleRate {
-		log.Printf("Using resampler to format from %d khz to %d khz", int(format.SampleRate), int(r.sampleRate))
+		log.Printf("Using resampler to format from %d khz to %d khz", format.SampleRate, r.sampleRate)
 		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
 	}
 
