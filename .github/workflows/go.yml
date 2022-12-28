@@ -24,15 +24,15 @@ jobs:
       - name: Install packages
         run: sudo apt install -y libasound2-dev
 
+      - name: Test
+        run: go test -v ./...
+
       - name: Install gox
         run: go install github.com/mitchellh/gox@latest
 
       - name: Build
-#        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64 darwin/amd64"
-        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64"
-
-      - name: Test
-        run: go test -v ./...
+        run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64 darwin/amd64"
+#       run: gox -output="./output/radio_{{.OS}}_{{.Arch}}" -osarch="windows/amd64 windows/386 linux/amd64"
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
