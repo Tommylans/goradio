@@ -13,6 +13,14 @@
 
 This is a cli tool to play some internet radio's made with Go.
 
+## Screenshot
+
+<details>
+  <summary>Click me</summary>
+  
+  <img src="https://link.storjshare.io/s/jwfffvjuj2ofruocy2iv5nywxwja/devv/github/GoRadio/Tui-Screenshot.png?wrap=0" alt="Screenshot of the terminal with the tui open" />
+</details>
+
 ## Usage
 
 Compile the project and then just run the binary in the terminal.
