@@ -13,6 +13,9 @@
 
 This is a cli tool to play some internet radio's made with Go.
 
+## Integrations
+This Radio client also has Discord RPC support.
+
 ## Screenshot
 
 <details>
