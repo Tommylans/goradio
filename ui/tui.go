@@ -13,7 +13,7 @@ type PlayerUi struct {
 	tracksTable *tview.Table
 	logView     *tview.TextView
 
-	currentChannel *channels.RadioChannel
+	currentChannel channels.RadioStation
 
 	debugMode bool
 

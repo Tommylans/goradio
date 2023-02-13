@@ -20,23 +20,26 @@ func InitDiscordRichPresence(clientId string) error {
 	return nil
 }
 
-func UpdateDiscordPresence(channel *channels.RadioChannel) error {
+func UpdateDiscordPresence(channel channels.RadioStation) error {
 	if channel == nil {
 		return ErrChannelIsNil
 	}
 
 	now := time.Now()
 
+	radioStationName := channel.GetName()
+
 	activity := client.Activity{
-		Details: channel.Name,
+		Details: radioStationName,
 		Timestamps: &client.Timestamps{
 			Start: &now,
 		},
 	}
 
-	if channel.DiscordSnowflakeId != "" {
-		activity.LargeImage = channel.DiscordSnowflakeId
-		activity.LargeText = channel.Name
+	radioStationDiscordId := channel.GetDiscordSnowflakeId()
+	if radioStationDiscordId != "" {
+		activity.LargeImage = radioStationDiscordId
+		activity.LargeText = radioStationName
 	}
 
 	err := client.SetActivity(activity)

@@ -8,7 +8,6 @@ import (
 	"github.com/tommylans/goradio/channels"
 	"io"
 	"log"
-	"net/http"
 	"time"
 )
 
@@ -26,56 +25,99 @@ func NewRadioPlayer() *RadioPlayer {
 	return &RadioPlayer{}
 }
 
-func (r *RadioPlayer) PlayRadioChannel(channel *channels.RadioChannel) error {
-	r.CloseCurrentStreams()
-	log.Println("Starting stream for: " + channel.Name)
+func (r *RadioPlayer) PlayRadioChannel(channel channels.RadioStation) error {
+	log.Println("Starting stream for: " + channel.GetName())
 
-	response, err := http.Get(channel.Url)
+	radioStream, err := channel.OpenStream()
 	if err != nil {
-		log.Println("Error while getting stream:", err)
 		return err
 	}
-	r.externalInputStream = response.Body
+	r.externalInputStream = radioStream
 
 	var stream beep.Streamer
-
 	stream, format, err := mp3.Decode(r.externalInputStream)
 	if err != nil {
 		return err
 	}
 
+	stream = r.attachVolumeControl(stream)
+
+	return r.playStream(stream, format)
+}
+
+func (r *RadioPlayer) playStream(stream beep.Streamer, format beep.Format) error {
+	sampleRate := format.SampleRate
+
+	if !r.speakerInitialized {
+		err := r.initializeSpeaker(sampleRate)
+		if err != nil {
+			return err
+		}
+	}
+
+	stream = r.ensureSampleRate(stream, sampleRate)
+
+	speaker.Play(stream)
+
+	return nil
+}
+
+func (r *RadioPlayer) initializeSpeaker(sampleRate beep.SampleRate) error {
+	err := speaker.Init(sampleRate, sampleRate.N(time.Millisecond*100))
+	if err != nil {
+		return err
+	}
+
+	r.sampleRate = sampleRate
+	r.speakerInitialized = true
+
+	return nil
+}
+
+func (r *RadioPlayer) changeExternalStream(stream io.ReadCloser) {
+	if r.externalInputStream != nil {
+		r.externalInputStream.Close()
+	}
+
+	r.externalInputStream = stream
+}
+
+func (r *RadioPlayer) ensureSampleRate(streamer beep.Streamer, targetSampleRate beep.SampleRate) beep.Streamer {
+	if targetSampleRate != r.sampleRate {
+		log.Printf("Using resampler to format from %d khz to %d khz", targetSampleRate, r.sampleRate)
+
+		return beep.Resample(6, targetSampleRate, r.sampleRate, streamer)
+	}
+
+	return streamer
+}
+
+func (r *RadioPlayer) attachVolumeControl(streamer beep.Streamer) beep.Streamer {
 	volume := &effects.Volume{
-		Streamer: stream,
+		Streamer: streamer,
 		Base:     2,
 		Volume:   r.sessionVolume,
 		Silent:   false,
 	}
 
 	r.volume = volume
-	stream = volume
 
-	r.play(stream, format)
-	return nil
+	return volume
 }
 
-func (r *RadioPlayer) play(stream beep.Streamer, format beep.Format) {
-	if !r.speakerInitialized {
-		speaker.Init(format.SampleRate, format.SampleRate.N(time.Millisecond*100))
-		r.sampleRate = format.SampleRate
-		r.speakerInitialized = true
+func (r *RadioPlayer) changeVolume(change float64) {
+	if r.volume != nil {
+		speaker.Lock()
+		r.volume.Volume += change
+		r.sessionVolume = r.volume.Volume
+		speaker.Unlock()
 	}
-
-	log.Println("Samplerate:", format.SampleRate)
-	if format.SampleRate != r.sampleRate {
-		log.Printf("Using resampler to format from %d khz to %d khz", format.SampleRate, r.sampleRate)
-		stream = beep.Resample(6, format.SampleRate, r.sampleRate, stream)
-	}
-
-	speaker.Play(stream)
 }
 
-func (r *RadioPlayer) CloseCurrentStreams() {
+func (r *RadioPlayer) Close() error {
 	if r.externalInputStream != nil {
-		r.externalInputStream.Close()
+		return r.externalInputStream.Close()
 	}
+
+	return nil
 }

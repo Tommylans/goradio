@@ -25,12 +25,3 @@ func (r *RadioPlayer) ResetVolume() {
 func (r *RadioPlayer) DecreaseVolume() {
 	r.changeVolume(-0.5)
 }
-
-func (r *RadioPlayer) changeVolume(change float64) {
-	if r.volume != nil {
-		speaker.Lock()
-		r.volume.Volume += change
-		r.sessionVolume = r.volume.Volume
-		speaker.Unlock()
-	}
-}
