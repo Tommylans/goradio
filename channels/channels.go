@@ -2,20 +2,15 @@ package channels
 
 import (
 	"io"
-	"net/http"
 )
+
+// TODO: Think about if we just want to return a beep.Streamer or if we want to return a io.ReadCloser
 
 type RadioStation interface {
 	GetName() string
 	GetDiscordSnowflakeId() string
 	OpenStream() (io.ReadCloser, error)
 	GetLocation() string
-}
-
-type RadioStationHttp struct {
-	Name               string
-	Url                string
-	DiscordSnowflakeId string
 }
 
 var (
@@ -32,24 +27,3 @@ var (
 		&RadioStationHttp{Name: "538 Verrückte Stunden", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3", DiscordSnowflakeId: "538"},
 	}
 )
-
-func (r *RadioStationHttp) GetName() string {
-	return r.Name
-}
-
-func (r *RadioStationHttp) GetDiscordSnowflakeId() string {
-	return r.DiscordSnowflakeId
-}
-
-func (r *RadioStationHttp) OpenStream() (io.ReadCloser, error) {
-	response, err := http.Get(r.Url)
-	if err != nil {
-		return nil, err
-	}
-
-	return response.Body, nil
-}
-
-func (r *RadioStationHttp) GetLocation() string {
-	return r.Url
-}
