@@ -32,7 +32,7 @@ func (r *RadioPlayer) PlayRadioChannel(channel channels.RadioStation) error {
 	if err != nil {
 		return err
 	}
-	r.externalInputStream = radioStream
+	r.changeExternalStream(radioStream)
 
 	var stream beep.Streamer
 	stream, format, err := mp3.Decode(r.externalInputStream)
