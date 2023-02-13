@@ -46,7 +46,7 @@ func (p *PlayerUi) applicationKeyBindHandler() func(event *tcell.EventKey) *tcel
 
 		if key == "q" {
 			p.appUi.Stop()
-			p.player.CloseCurrentStreams()
+			p.player.Close()
 			os.Exit(0)
 		}
 

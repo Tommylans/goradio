@@ -50,7 +50,7 @@ func (p *PlayerUi) renderTracksTableData() {
 	p.tracksTable.Clear()
 
 	for i, station := range channels.RadioChannels {
-		p.tracksTable.SetCellSimple(i, 0, station.Name)
-		p.tracksTable.SetCellSimple(i, 1, station.Url)
+		p.tracksTable.SetCellSimple(i, 0, station.GetName())
+		p.tracksTable.SetCellSimple(i, 1, station.GetLocation())
 	}
 }
