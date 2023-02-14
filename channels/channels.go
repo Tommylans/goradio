@@ -5,6 +5,7 @@ import (
 )
 
 // TODO: Think about if we just want to return a beep.Streamer or if we want to return a io.ReadCloser
+// TODO: Think about a way to be able to allow user input so the user can add streams to the list
 
 type RadioStation interface {
 	GetName() string

@@ -2,10 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/tommylans/goradio/discord"
-	"github.com/tommylans/goradio/radioplayer"
-	"github.com/tommylans/goradio/ui"
-	"log"
+	"github.com/tommylans/goradio/bubble"
 )
 
 var (
@@ -18,22 +15,26 @@ const (
 )
 
 func main() {
-	flag.Parse()
+	view := bubble.NewBubble()
 
-	radioPlayer := radioplayer.NewRadioPlayer()
+	view.Run()
 
-	playerUi := ui.NewPlayerUi(radioPlayer, *debug)
-	log.SetOutput(playerUi.GetLogView())
+	//flag.Parse()
 
-	go func() {
-		err := discord.InitDiscordRichPresence(DiscordClientId)
-		if err != nil {
-			log.Println(err)
-		}
-	}()
+	//radioPlayer := radioplayer.NewRadioPlayer()
 
-	err := playerUi.StartTui()
-	if err != nil {
-		panic(err)
-	}
+	//playerUi := ui.NewPlayerUi(radioPlayer, *debug)
+	//log.SetOutput(playerUi.GetLogView())
+
+	//go func() {
+	//	err := discord.InitDiscordRichPresence(DiscordClientId)
+	//	if err != nil {
+	//		log.Println(err)
+	//	}
+	//}()
+
+	//err := playerUi.StartTui()
+	//if err != nil {
+	//	panic(err)
+	//}
 }
