@@ -1,6 +1,7 @@
 package channels
 
 import (
+	"context"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func TestChannelsConfiguration(t *testing.T) {
 				t.Errorf("Channel name is required")
 			}
 
-			stream, err := channel.OpenStream()
+			stream, err := channel.OpenStream(context.Background())
 			if err != nil {
 				t.Errorf("Channel returned an error: %s", err)
 			}

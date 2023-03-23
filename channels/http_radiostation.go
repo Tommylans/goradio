@@ -1,6 +1,7 @@
 package channels
 
 import (
+	"context"
 	"io"
 	"net/http"
 )
@@ -19,8 +20,8 @@ func (r *RadioStationHttp) GetDiscordSnowflakeId() string {
 	return r.DiscordSnowflakeId
 }
 
-func (r *RadioStationHttp) OpenStream() (io.ReadCloser, error) {
-	response, err := http.Get(r.Url)
+func (r *RadioStationHttp) OpenStream(ctx context.Context) (io.ReadCloser, error) {
+	response, err := http.Get(r.Url) // TODO: Add a context to this so we can cancel the request
 	if err != nil {
 		return nil, err
 	}

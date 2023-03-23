@@ -1,6 +1,7 @@
 package channels
 
 import (
+	"context"
 	"io"
 )
 
@@ -9,7 +10,7 @@ import (
 type RadioStation interface {
 	GetName() string
 	GetDiscordSnowflakeId() string
-	OpenStream() (io.ReadCloser, error)
+	OpenStream(ctx context.Context) (io.ReadCloser, error) // TODO: Add a context to this so we can cancel the request
 	GetLocation() string
 }
 
@@ -25,5 +26,6 @@ var (
 		&RadioStationHttp{Name: "NPO FunX", Url: "https://icecast.omroep.nl/funx-bb-mp3"},
 		&RadioStationHttp{Name: "538", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3", DiscordSnowflakeId: "538"},
 		&RadioStationHttp{Name: "538 Verrückte Stunden", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3", DiscordSnowflakeId: "538"},
+		&YoutubeLivestream{Name: "lofi", Url: "https://www.youtube.com/watch?v=jfKfPfyJRdk"},
 	}
 )

@@ -1,6 +1,7 @@
 package radioplayer
 
 import (
+	"context"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/effects"
 	"github.com/faiface/beep/mp3"
@@ -28,7 +29,7 @@ func NewRadioPlayer() *RadioPlayer {
 func (r *RadioPlayer) PlayRadioChannel(channel channels.RadioStation) error {
 	log.Println("Starting stream for: " + channel.GetName())
 
-	radioStream, err := channel.OpenStream()
+	radioStream, err := channel.OpenStream(context.TODO())
 	if err != nil {
 		return err
 	}
