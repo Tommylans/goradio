@@ -25,5 +25,6 @@ var (
 		&RadioStationHttp{Name: "NPO FunX", Url: "https://icecast.omroep.nl/funx-bb-mp3"},
 		&RadioStationHttp{Name: "538", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3", DiscordSnowflakeId: "538"},
 		&RadioStationHttp{Name: "538 Verrückte Stunden", Url: "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3", DiscordSnowflakeId: "538"},
+		&RadioStationHttp{Name: "West Friese Piraten Combinatie", Url: "http://82.72.214.143:8000/WFPC", DiscordSnowflakeId: "wfpc"},
 	}
 )
