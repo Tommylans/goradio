@@ -1,0 +1,65 @@
+[
+  {
+    "type": "http-mp3",
+    "name": "SlamFM",
+    "url": "https://stream.slam.nl/slam_mp3",
+    "discordSnowflakeId": "slamfm"
+  },
+  {
+    "type": "http-mp3",
+    "name": "Veronica",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/VERONICA.mp3"
+  },
+  {
+    "type": "http-mp3",
+    "name": "SkyRadio",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/SKYRADIO.mp3",
+    "discordSnowflakeId": "skyradio"
+  },
+  {
+    "type": "http-mp3",
+    "name": "NPO Radio 1",
+    "url": "https://icecast.omroep.nl/radio1-bb-mp3"
+  },
+  {
+    "type": "http-mp3",
+    "name": "NPO Radio 2",
+    "url": "https://icecast.omroep.nl/radio2-bb-mp3",
+    "discordSnowflakeId": "nporadio2"
+  },
+  {
+    "type": "http-mp3",
+    "name": "NPO Radio 2 Soul & Jazz",
+    "url": "https://icecast.omroep.nl/radio6-bb-mp3",
+    "discordSnowflakeId": "nporadio2"
+  },
+  {
+    "type": "http-mp3",
+    "name": "NPO 3FM",
+    "url": "https://icecast.omroep.nl/3fm-bb-mp3",
+    "discordSnowflakeId": "3fm"
+  },
+  {
+    "type": "http-mp3",
+    "name": "NPO FunX",
+    "url": "https://icecast.omroep.nl/funx-bb-mp3"
+  },
+  {
+    "type": "http-mp3",
+    "name": "538",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIO538.mp3",
+    "discordSnowflakeId": "538"
+  },
+  {
+    "type": "http-mp3",
+    "name": "538 Verrückte Stunden",
+    "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3",
+    "discordSnowflakeId": "538"
+  },
+  {
+    "type": "http-mp3",
+    "name": "West Friese Piraten Combinatie",
+    "url": "http://82.72.214.143:8000/WFPC",
+    "discordSnowflakeId": "wfpc"
+  }
+]
