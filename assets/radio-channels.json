@@ -61,5 +61,11 @@
     "name": "West Friese Piraten Combinatie",
     "url": "http://82.72.214.143:8000/WFPC",
     "discordSnowflakeId": "wfpc"
+  },
+  {
+    "type": "http-mp3",
+    "name": "De Hollandse hitgigant radio",
+    "url": "http://82.72.214.143:8000/DEHOLLANDSEHITGIGANTRADIO",
+    "discordSnowflakeId": "dhhgr"
   }
 ]
