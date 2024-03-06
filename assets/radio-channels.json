@@ -55,17 +55,5 @@
     "name": "538 Verrückte Stunden",
     "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3",
     "discordSnowflakeId": "538"
-  },
-  {
-    "type": "http-mp3",
-    "name": "West Friese Piraten Combinatie",
-    "url": "http://82.72.214.143:8000/WFPC",
-    "discordSnowflakeId": "wfpc"
-  },
-  {
-    "type": "http-mp3",
-    "name": "De Hollandse hitgigant radio",
-    "url": "http://82.72.214.143:8000/DEHOLLANDSEHITGIGANTRADIO",
-    "discordSnowflakeId": "dhhgr"
   }
 ]

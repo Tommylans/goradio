@@ -1,6 +1,6 @@
 package radioplayer
 
-import "github.com/faiface/beep/speaker"
+import "github.com/gopxl/beep/speaker"
 
 func (r *RadioPlayer) Stop() {
 	speaker.Clear()
