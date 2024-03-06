@@ -1,11 +1,12 @@
 package ui
 
 import (
+	"log"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"github.com/tommylans/goradio/channels"
 	"github.com/tommylans/goradio/discord"
-	"log"
 )
 
 func (p *PlayerUi) initTracksTable() {

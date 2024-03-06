@@ -1,11 +1,12 @@
 package ui
 
 import (
+	"sync"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"github.com/tommylans/goradio/channels"
 	"github.com/tommylans/goradio/radioplayer"
-	"sync"
 )
 
 type PlayerUi struct {

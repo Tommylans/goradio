@@ -1,9 +1,10 @@
 package ui
 
 import (
-	"github.com/gdamore/tcell/v2"
 	"log"
 	"os"
+
+	"github.com/gdamore/tcell/v2"
 )
 
 func (p *PlayerUi) playerKeyBindHandler() func(event *tcell.EventKey) *tcell.EventKey {

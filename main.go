@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
+	"log"
+
 	"github.com/tommylans/goradio/discord"
 	"github.com/tommylans/goradio/radioplayer"
 	"github.com/tommylans/goradio/ui"
-	"log"
 )
 
 var (

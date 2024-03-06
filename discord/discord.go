@@ -2,9 +2,10 @@ package discord
 
 import (
 	"errors"
+	"time"
+
 	"github.com/hugolgst/rich-go/client"
 	"github.com/tommylans/goradio/channels"
-	"time"
 )
 
 var (
