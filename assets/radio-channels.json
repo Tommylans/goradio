@@ -55,5 +55,11 @@
     "name": "538 Verrückte Stunden",
     "url": "https://playerservices.streamtheworld.com/api/livestream-redirect/TLPSTR21.mp3",
     "discordSnowflakeId": "538"
+  },
+  {
+    "type": "http-mp3",
+    "name": "Tukker FM",
+    "url": "https://stream.tukkerfm.nl/tukkerfm",
+    "discordSnowflakeId": "tukkerfm"
   }
 ]
