@@ -61,5 +61,11 @@
     "name": "Tukker FM",
     "url": "https://stream.tukkerfm.nl/tukkerfm",
     "discordSnowflakeId": "tukkerfm"
+  },
+  {
+    "type": "http-mp3",
+    "name": "Yoursafe Radio",
+    "url": "https://radiostream.yoursafe.nl/stream",
+    "discordSnowflakeId": "yoursafe"
   }
 ]
